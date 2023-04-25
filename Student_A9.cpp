@@ -2,6 +2,7 @@
 #include <string>
 using namespace std;
 
+
 /* ************** class Osoba_cls ************** */
 class Osoba_cls
 {
@@ -31,6 +32,7 @@ public:
 };
 /* ************** class Osoba_cls ************** */
 
+/* ************** Osoba_cls::Osoba_cls ************** */
 Osoba_cls::Osoba_cls(string meno_str, string priezvisko_str)
 {
     this->meno_str = meno_str;
@@ -56,15 +58,9 @@ void Osoba_cls::setPriezvisko_str(string priezvisko_str)
 {
     this->priezvisko_str = priezvisko_str;
 }
+/* ************** Osoba_cls::Osoba_cls ************** */
 
 /* ************** class Student_cls ************** */
-enum StudijnyProgram {
-    APLIKOVANA_INFORMATIKA = 1,
-    APLIKOVANA_BIOLOGIA,
-    BIOTECHNOLOGIE,
-    CHEMIA
-};
-
 class Student_cls : public Osoba_cls
 {
 
@@ -83,7 +79,11 @@ public:
     bool vlozZnamku(int znamka);
     double priemer();
 
+    // Konstruktor
     Student_cls(string meno_str, string priezvisko_str, int rocnik_int, int sposobStudia_int, int typStudia_int, int studijnyProgram_int);
+
+    // Destruktor
+    ~Student_cls() {}
 
     bool Bakalar_bl();
 
@@ -102,6 +102,7 @@ public:
 };
 /* ************** class Student_cls ************** */
 
+/* ************** Student_cls::Student_cls ************** */
 Student_cls::Student_cls(string meno_str, string priezvisko_str, int rocnik_int, int sposobStudia_int, int typStudia_int, int studijnyProgram_int) : Osoba_cls(meno_str, priezvisko_str)
 {
     // **** typStudia_int ****
@@ -155,19 +156,7 @@ Student_cls::Student_cls(string meno_str, string priezvisko_str, int rocnik_int,
     }
 
     // **** studijnyProgram_int ****
-     if (studijnyProgram_int == 1)
-    {
-        this->studijnyProgram_int = studijnyProgram_int;
-    }
-    else if (studijnyProgram_int == 2)
-    {
-        this->studijnyProgram_int = studijnyProgram_int;
-    }
-    else if (studijnyProgram_int == 3)
-    {
-        this->studijnyProgram_int = studijnyProgram_int;
-    }
-    else if (studijnyProgram_int == 4)
+    if (studijnyProgram_int >= 1 && studijnyProgram_int <= 4)
     {
         this->studijnyProgram_int = studijnyProgram_int;
     }
@@ -175,6 +164,7 @@ Student_cls::Student_cls(string meno_str, string priezvisko_str, int rocnik_int,
     {
         this->studijnyProgram_int = 0;
     }
+
 }
 
 bool Student_cls::Bakalar_bl()
@@ -222,11 +212,6 @@ bool Student_cls::DenneStudium_bl()
 bool Student_cls::ExterneStudium_bl()
 {
     return (sposobStudia_int == 2 );
-}
-
-bool ProgramStudia_bl()
-{
-
 }
 
 void Student_cls::vypis() //vypis pre uzivatela
@@ -329,7 +314,192 @@ double Student_cls::priemer()
     }
     return priemer_dbl;
 }
+/* ************** Student_cls::Student_cls ************** */
 
+/* ************** class Zamestnanec_cls ************** */
+class Zamestnanec_cls : public Osoba_cls
+{
+    private:
+        int osobneCislo_int;
+        int pracovnyPomer_int; // 1-doba neurcita, 2-doba urcita, 3-skratena pracovna doba
+        int typZamestnanca_int; // 1-Pedagog, 2-Ostatne
+        string titul_str;
+        int titul_int;
+public:
+
+    // Konstruktor
+    Zamestnanec_cls(int osobneCislo_int, string titul_str, string meno_str, string priezvisko_str, int pracovnyPomer_int, int typZamestnanca_int);
+
+    // Destruktor
+    ~Zamestnanec_cls() {}
+
+    // Getter a setter pre osobneCislo_int
+    int getOsobneCislo_int() const;
+
+    void setOsobneCislo_int(int osobneCislo_int);
+
+    // Getter a setter pre osobneCislo_int
+    string getTitul_str() const;
+
+    void setTitul_str(string titul_str);
+
+    bool PracPomNeurcita_bl();
+
+    bool PracPomUrcita_bl();
+
+    bool PracPomSkrateny_bl();
+
+    bool Titul_bl();
+
+    bool TypZamPedagog_bl();
+
+    bool TypZamOstatne_bl();
+
+    void vypis();
+};
+/* ************** class Zamestnanec_cls ************** */
+
+/* ************** Zamestnanec_cls::Zamestnanec_cls ************** */
+Zamestnanec_cls::Zamestnanec_cls(int osobneCislo_int, string titul_str, string meno_str, string priezvisko_str, int pracovnyPomer_int, int typZamestnanca_int) : Osoba_cls(meno_str, priezvisko_str)
+{
+    // **** osobneCislo_int ****
+    this->osobneCislo_int=osobneCislo_int;
+
+    // **** titul_str ****
+    this->titul_str = titul_str;
+
+
+    // **** pracovnyPomer_int ****
+    if (pracovnyPomer_int >= 1 && pracovnyPomer_int <= 3)
+    {
+        this->pracovnyPomer_int = pracovnyPomer_int;
+    }
+    else
+    {
+        this->pracovnyPomer_int = 0; //inak pracovnyPomer_int = 0
+    }
+
+    // **** typZamestnanca_int ****
+    if (typZamestnanca_int >= 1 && typZamestnanca_int <= 2)
+    {
+        this->typZamestnanca_int = typZamestnanca_int; //ak je v rozsahu 1 ÷ 2 tak typZamestnanca_int = 1 alebo 2
+    }
+    else
+    {
+        this->typZamestnanca_int = 0; //inak typZamestnanca_int = 0
+    }
+
+}
+
+int Zamestnanec_cls::getOsobneCislo_int() const
+{
+    return osobneCislo_int;
+}
+
+void Zamestnanec_cls::setOsobneCislo_int(int osobneCislo_int)
+{
+    this->osobneCislo_int=osobneCislo_int;
+}
+
+string Zamestnanec_cls::getTitul_str() const
+{
+    return titul_str;
+}
+
+void Zamestnanec_cls::setTitul_str(string titul_str)
+{
+    this->titul_str=titul_str;
+}
+
+bool Zamestnanec_cls::PracPomNeurcita_bl()
+{
+    return (pracovnyPomer_int == 1 );
+}
+
+bool Zamestnanec_cls::PracPomUrcita_bl()
+{
+    return (pracovnyPomer_int == 2 );
+}
+
+bool Zamestnanec_cls::PracPomSkrateny_bl()
+{
+    return (pracovnyPomer_int == 3 );
+}
+
+bool Zamestnanec_cls::Titul_bl()
+{
+    if (titul_str.length() > 0) //ak je dlzka > 0 tak Titul_bl je TRUE
+    {
+        return true;
+    }
+    else
+    {
+        return false; //inak Titul_bl je FALSE
+    }
+}
+
+bool Zamestnanec_cls::TypZamPedagog_bl()
+{
+    return (typZamestnanca_int == 1 );
+}
+
+bool Zamestnanec_cls::TypZamOstatne_bl()
+{
+    return (typZamestnanca_int == 2 );
+}
+
+void Zamestnanec_cls::vypis()
+{
+    string Titul_str = "";
+    string DruhPracPom_str = "";
+    string TypZamPom_str = "";
+
+    if (Titul_bl())
+    {
+        Titul_str = titul_str;
+    }
+    else
+    {
+        Titul_str = "";
+    }
+
+    if(PracPomNeurcita_bl())
+    {
+        DruhPracPom_str = "pracovny pomer na dobu neurcitu";
+    }
+    else if(PracPomUrcita_bl())
+    {
+        DruhPracPom_str = "pracovny pomer na dobu urcitu";
+    }
+    else if(PracPomSkrateny_bl())
+    {
+        DruhPracPom_str = "skrateny pracovny pomer";
+    }
+    else
+    {
+        DruhPracPom_str = "nespravne zadany typ pracovneho pomeru!";
+    }
+
+    if(TypZamPedagog_bl())
+    {
+       TypZamPom_str = "pedagogicky pracovnikov";
+    }
+    else if(TypZamOstatne_bl())
+    {
+       TypZamPom_str = "nepedagogicky pracovnikov";
+    }
+    else
+    {
+        TypZamPom_str = "nespravne zadany typ zamestnanca";
+    }
+
+
+     cout << "Osobne cislo: "<< getOsobneCislo_int() << " " << Titul_str << " " << getMeno_str() << " " << getPriezvisko_str() << "." << endl;
+     cout << getMeno_str() << " " << getPriezvisko_str() << " ma " << DruhPracPom_str << "." << endl;
+     cout << getMeno_str() << " " << getPriezvisko_str() << " je " << TypZamPom_str << "." << endl;
+     cout << " * * * * *" << endl;
+}
+/* ************** Zamestnanec_cls::Zamestnanec_cls ************** */
 
 /* ************** MAIN ************** */
 int main(int argc, char** argv)
@@ -408,6 +578,27 @@ int main(int argc, char** argv)
     cout << " ******** "<< endl;
     cout << endl;
 
+    cout << " ******** "<< endl;
+    cout << " Class Zamestnanec "<< endl;
+    Zamestnanec_cls Zamestnanec_clss[] = //Vlozenie studenta, rocniku, sposobu studia, typu studia a studijny program
+    {
+        //        osobneCislo_int, titul_int, meno_str, priezvisko_str, pracovnyPomer_int, typZamestnanca_int
+        Zamestnanec_cls(1501,"Bc.","Juro","Mak", 1, 1),
+        Zamestnanec_cls(1503,"","Oto","Mrkva", 3, 2),
+        Zamestnanec_cls(1709,"Mgr.","Filip","Datalinka", 1, 1),
+        Zamestnanec_cls(1901,"Ing.","Norbert","Petrzlenka", 1, 1),
+        Zamestnanec_cls(1915,"","Stefan","Pazitka", 2, 2)
+    };
+
+
+    int numZamestnanec_int = sizeof(Zamestnanec_clss) / sizeof(Zamestnanec_cls); //vypocitanie poctu opakovani pre Zamestnanec_clss[i]
+
+    for (int i = 0; i < numZamestnanec_int; i++)
+    {
+        Zamestnanec_clss[i].vypis();
+    }
+
+    cout << " ******** "<< endl;
 
 
     return 0;
